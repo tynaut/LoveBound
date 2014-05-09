@@ -1,0 +1,14 @@
+{
+  "itemName" : "lbindifferencepill",
+  "rarity" : "Common",
+  "inventoryIcon" : "indifferenceicon.png",
+  "description" : "Indifference.",
+  "shortdescription" : "Indifference",
+  "effects" : [ [
+      {
+        "kind" : "indifferencestatuseffect"
+      }
+    ] ],
+  "emote" : "",
+  "emitters" : [ "stimuse" ]
+}

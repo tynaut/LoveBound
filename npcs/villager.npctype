@@ -1,0 +1,22 @@
+{
+  "__merge" : [],
+  "scripts" : [
+    "/scripts/delegate.lua",
+	"/npcs/lovebound.lua",
+	"/npcs/followState.lua",
+    "/npcs/equipState.lua",
+    "/scripts/helper.lua",
+    "/scripts/entityproxy.lua"
+  ],
+  "scriptConfig" : {
+    "relationship" : {
+      "decayRate" : 0.1,
+      "charmRange" : [-1, 4],
+      "flirtRange" : [-1, 4],
+      "offendRange" : [-5, -1],
+      "disgustRange" : [-10, -5],
+      "companionThreshold" : 50,
+      "loverThreshold" : 100
+    }
+  }
+}

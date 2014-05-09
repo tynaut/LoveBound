@@ -1,0 +1,42 @@
+- NPCs
+  - Villagers
+  @ Guards
+
+- Build Relationship through Actions
+  @ Play music
+  - Interact
+  - Give gifts
+
+- Relationship Decay
+  - On damage -big
+  - The wrong kind of gift
+  - Return to spawn point below threshold
+  - Change damage team!
+  - on attack notification
+
+- Interaction
+  - Start/End Follow
+  - broadcast to others to stop follow
+
+- Companion matter relocator
+  - Interact, check for following companion, if so, create item w/ companion data
+  - look for data chip, if found, spawn companion (broadcast stop follow on spawn)
+
+- Companion when Friendship > threshold
+  - Follow
+  - Change damage team!
+  @ Defend
+
+- Mate when Love > threshold
+  - Follow
+  - Change damage team!
+  @ Defend
+
+- Equip Companion
+  - Equipment Storage
+  - Armor
+  @ Weapons
+
+- Mate Death
+  - Drop DNA for respawn (verify seed) D.N.A. R.I.N.G., (Death not applicable, 
+  - Cloner using mate DNA

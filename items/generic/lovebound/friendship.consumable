@@ -1,0 +1,14 @@
+{
+  "itemName" : "lbfriendshippill",
+  "rarity" : "Common",
+  "inventoryIcon" : "friendshipicon.png",
+  "description" : "Friendship is like money, easier made than kept.",
+  "shortdescription" : "Friendship",
+  "effects" : [ [
+      {
+        "kind" : "friendstatuseffect"
+      }
+    ] ],
+  "emote" : "",
+  "emitters" : [ "stimuse" ]
+}

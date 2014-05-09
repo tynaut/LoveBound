@@ -1,0 +1,14 @@
+{
+  "itemName" : "lblovepill",
+  "rarity" : "Common",
+  "inventoryIcon" : "loveicon.png",
+  "description" : "Love.",
+  "shortdescription" : "Love",
+  "effects" : [ [
+      {
+        "kind" : "lovestatuseffect"
+      }
+    ] ],
+  "emote" : "",
+  "emitters" : [ "stimuse" ]
+}

@@ -1,0 +1,11 @@
+{
+  "name" : "Love Bound",
+  "version" : "Beta v. Furious Koala",
+  "path" : ".",
+  "dependencies" : [],
+  "metadata" : {
+    "author" : "tynaut",
+    "description" : "I might be an NPC, but I think I love you.",
+    "version" : "0.1"
+  }
+}

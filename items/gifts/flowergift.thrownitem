@@ -1,0 +1,21 @@
+{
+  "itemName" : "lovegift",
+  "rarity" : "Common",
+  "inventoryIcon" : "fireflowericon.png",
+  "image" : "fireflowericon.png",
+  "shortdescription" : "Fireflower.",
+  "description" : "Flowers!",
+
+  "ammoUsage" : 0,
+
+  "edgeTrigger" : true,
+  "windupTime" : 0.0,
+  "cooldown" : 0.4,
+
+  "projectileType" : "relationshipprojectile",
+  "projectileConfig" : {
+    "speed" : 30,
+    "level" : 1,
+	"damageKind" : "friendship"
+  }
+}

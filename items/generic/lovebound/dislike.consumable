@@ -1,0 +1,14 @@
+{
+  "itemName" : "lbdislikepill",
+  "rarity" : "Common",
+  "inventoryIcon" : "dislikeicon.png",
+  "description" : "Dislike.",
+  "shortdescription" : "Dislike",
+  "effects" : [ [
+      {
+        "kind" : "dislikestatuseffect"
+      }
+    ] ],
+  "emote" : "",
+  "emitters" : [ "stimuse" ]
+}

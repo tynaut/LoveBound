@@ -1,0 +1,8 @@
+{
+  "kind" : "friendstatuseffect",
+  "duration" : 0.85,
+  "primitives" : [
+    { "name" : "groundmovementmodifier", "mode" : "sum", "amount" : 0 }
+  ],
+  "effectSources" : [ "friendeffect" ]
+}

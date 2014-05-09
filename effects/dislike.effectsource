@@ -1,0 +1,30 @@
+{
+  "kind" : "dislikeeffect",
+  "definition" : {
+    "duration" : 0.5,
+    "loops" : true,
+    "location" : "mouth",
+    "start" : {
+      "particles" : [
+        [ ]
+      ],
+      "sounds" : [
+        [ ]
+      ]
+    },
+    "particles" : [
+      [ "dislikedust", "dislikedust" ]
+    ],
+    "sounds" : [
+      [ ]
+    ],
+    "stop" : {
+      "particles" : [
+        [ ]
+      ],
+      "sounds" : [
+        [ ]
+      ]
+    }
+  }
+}

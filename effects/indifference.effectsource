@@ -1,0 +1,30 @@
+{
+  "kind" : "indifferenceeffect",
+  "definition" : {
+    "duration" : 0.5,
+    "loops" : true,
+    "location" : "mouth",
+    "start" : {
+      "particles" : [
+        [ ]
+      ],
+      "sounds" : [
+        [ ]
+      ]
+    },
+    "particles" : [
+      [ "indifferencedust", "indifferencedust" ]
+    ],
+    "sounds" : [
+      [ ]
+    ],
+    "stop" : {
+      "particles" : [
+        [ ]
+      ],
+      "sounds" : [
+        [ ]
+      ]
+    }
+  }
+}

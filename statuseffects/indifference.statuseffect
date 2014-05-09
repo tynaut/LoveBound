@@ -1,0 +1,8 @@
+{
+  "kind" : "indifferencestatuseffect",
+  "duration" : 0.85,
+  "primitives" : [
+    { "name" : "groundmovementmodifier", "mode" : "sum", "amount" : 0 }
+  ],
+  "effectSources" : [ "indifferenceeffect" ]
+}
