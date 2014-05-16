@@ -1,0 +1,67 @@
+{
+  "type" : "itemator",
+
+  "categories" : [ "itemator" ],
+  "parts" : [ "body" ],
+
+  "animation" : "itemator.animation",
+  "projectiles" : "/monsters/projectiles.config",
+  "colors" : "/monsters/colors.config",
+  "reversed" : true,
+
+  "dropPools" : [ ],
+
+  "baseParameters" : {
+    "scripts" : [
+      "/monsters/unique/itemator/behavior.lua"
+    ],
+
+    "scriptDelta" : 5,
+
+    "metaBoundBox" : [-0.01, -0.01, 0.01, 0.01],
+    "scale" : 1.0,
+
+    "movementSettings" : {
+      "collisionPoly" : [ [-0.01, -0.01], [0.01, -0.01], [0.01, 0.01], [-0.01, 0.01] ],
+
+      "mass" : 0.1,
+      "walkSpeed" : 0,
+      "runSpeed" : 0,
+      "jumpSpeed" : 0
+    },
+
+    "bodyMaterialKind" : "organic",
+
+    "touchDamage" : {
+      "poly" : [ [-1.0, -1.0], [1.0, -1.0], [1.0, 1.0], [-1.0, 1.0] ],
+      "damage" : 15,
+
+      "teamType" : "enemy",
+      "damageSourceKind" : "bite",
+      "statusEffects" : [ ]
+    },
+
+    "statusParameters" : {
+      "baseMaxHealth" : 1,
+      "bodyMaterialKind" : "organic",
+      "damageConfig" : "/damage/damageresponse/groundnpc.config"
+    },
+
+    "inateStatusEffects" : [
+      {
+        "kind" : "Protection",
+        "amount" : 1.0
+      }
+    ],
+
+    "mouthOffset" : [0, 0],
+    "feetOffset" : [0, -8],
+
+    "blockedSensors" : [ [1.25, 0.0] ],
+
+    "moveTimeRange" : [2.5, 5.0],
+
+    "fleeDistanceRange" : [10.0, 50.0],
+    "fleeMaxTime" : 20.0
+  }
+}

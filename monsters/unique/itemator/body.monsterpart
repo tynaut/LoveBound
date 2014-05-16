@@ -1,0 +1,9 @@
+{
+  "name" : "body",
+  "category" : "itemator",
+  "type" : "body",
+
+  "frames" : {
+    "body" : "itemator.png"
+  }
+}

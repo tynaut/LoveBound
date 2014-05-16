@@ -1,0 +1,13 @@
+{
+  "projectileName" : "beacondatachipprojectile",
+  "physics" : "grenadenobounce",
+  "level" : 1,
+  "timeToLive" : 5,
+  "frames" : "beacondatachip.png",
+  "animationCycle" : 5,
+  "frameNumber" : 1,
+  "power" : 0,  
+  "damageKind" : "default",
+  "damageType" : "hitTest",
+  "onlyHitTerrain" : true
+}

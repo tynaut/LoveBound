@@ -1,0 +1,48 @@
+{
+  "animatedParts" : {
+    "stateTypes" : {
+      "movement" : {
+        "priority" : 0,
+        "default" : "default",
+
+        "states" : {
+          "default" : {
+            "frames" : 1
+          }
+        }
+      },
+
+      "portrait" : {
+        "priority" : -1,
+        "default" : "portrait",
+        "states" : {
+          "portrait" : {
+            "frames" : 1
+          }
+        }
+      }
+    },
+
+    "parts" : {
+      "body" : {
+        "partStates" : {
+          "movement" : {
+            "default" : {
+              "properties" : {
+                "image" : "<partImage>:default"
+              }
+            }
+          },
+
+          "portrait" : {
+            "portrait" : {
+              "properties" : {
+                "image" : "<partImage>:default"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "objectName" : "loveboundbeacon",
+  "rarity" : "Common",
+  "objectType" : "wire",
+  "price" : 500,
+  "description" : "replace",
+  "shortdescription" : "Beacon",
+  "race" : "generic",
+
+  "inventoryIcon" : "beaconicon.png",
+  "orientations" : [
+    {
+      "image" : "beacon.png:<color>.off",
+      "imagePosition" : [-8, -8],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "top" ]
+    }
+  ],
+
+  "scripts" : [ "/objects/lovebound/beacon/beacon.lua", "/scripts/helper.lua" ],
+  "scriptDelta" : 5,
+
+  "animation" : "/objects/lovebound/beacon/beacon.animation",
+
+  "animationParts" : {
+    "beacon" : "beacon.png"
+  },
+  "animationPosition" : [-8, -8],
+
+  "inboundNodes" : [ [0, 0] ]
+}

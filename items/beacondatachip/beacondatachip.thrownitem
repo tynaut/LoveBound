@@ -1,0 +1,21 @@
+{
+  "itemName" : "beacondatachip",
+  "rarity" : "Common",
+  "inventoryIcon" : "beacondatachip.png",
+  "image" : "beacondatachip.png",
+  "description" : "It's a typical circuit board.",
+  "shortdescription" : "Beacon Data Chip",
+  
+  "maxStack" : 1,
+  "ammoUsage" : 1,
+  
+  "edgeTrigger" : true,
+  "windupTime" : 0.0,
+  "cooldown" : 0.4,
+
+  "projectileType" : "beacondatachipprojectile",
+  "projectileConfig" : {
+    "speed" : 30,
+    "power" : 0
+  }
+}
