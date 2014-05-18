@@ -4,7 +4,6 @@
     "/scripts/delegate.lua",
 	"/npcs/lovebound.lua",
 	"/npcs/followState.lua",
-    "/npcs/equipState.lua",
     "/scripts/helper.lua",
     "/scripts/entityproxy.lua"
   ],
