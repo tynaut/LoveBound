@@ -3,19 +3,19 @@
   "rarity" : "Common",
   "inventoryIcon" : "fireflowericon.png",
   "image" : "fireflowericon.png",
-  "shortdescription" : "Fireflower.",
   "description" : "Flowers!",
+  "shortdescription" : "Fireflower.",
 
-  "ammoUsage" : 0,
+  "maxStack" : 1,
+  "ammoUsage" : 1,
 
   "edgeTrigger" : true,
   "windupTime" : 0.0,
   "cooldown" : 0.4,
 
-  "projectileType" : "relationshipprojectile",
+  "projectileType" : "flowergiftprojectile",
   "projectileConfig" : {
     "speed" : 30,
-    "level" : 1,
-	"damageKind" : "friendship"
+    "level" : 1
   }
 }

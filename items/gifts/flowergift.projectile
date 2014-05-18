@@ -1,0 +1,13 @@
+{
+  "projectileName" : "flowergiftprojectile",
+  "physics" : "grenadenobounce",
+  "level" : 1,
+  "timeToLive" : 5,
+  "frames" : "fireflowericon.png",
+  "animationCycle" : 5,
+  "frameNumber" : 1,
+  "power" : 0,  
+  "damageKind" : "lovebound",
+  "damageType" : "ignoresdef",
+  "universalDamage" : true
+}

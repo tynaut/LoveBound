@@ -1,4 +1,4 @@
-delegate.create("lovebound")
+if delegate ~= nil then delegate.create("lovebound") end
 --------------------------------------------------------------------------------
 function isCompanion()
   return lovebound ~= nil and lovebound.isCompanion()
@@ -22,6 +22,15 @@ function shouldRespawn()
 --    --world.spawnNpc(entity.toAbsolutePosition({ 0.0, 0.0 }), entity.species(), "villager", entity.level(), tonumber(entity.seed()));
 --    return true
 --  end
+  return false
+end
+--------------------------------------------------------------------------------
+function interceptItemator(itemConfig)
+  if lovebound.intercept and itemConfig.lovebound then
+    lovebound.updateRelationship(itemConfig)
+    lovebound.intercept = false
+    return true
+  end
   return false
 end
 --------------------------------------------------------------------------------
@@ -51,10 +60,23 @@ function lovebound.main()
 --  end
 end
 --------------------------------------------------------------------------------
+function lovebound.die()
+
+end
+--------------------------------------------------------------------------------
+function lovebound.damage(args)
+  local Uuid = world.entityUuid(args.sourceId)
+  
+  if args.sourceKind ~= "lovebound" then 
+    if lovebound.targetId == Uuid then lovebound.targetId = nil end
+    return nil
+  end
+  lovebound.intercept = true
+  lovebound.targetId = Uuid
+  return true
+end
+--------------------------------------------------------------------------------
 function lovebound.interact(args)
-helper.log(entity)
-helper.log(entity.seed())
-helper.log(tostring(tonumber(entity.seed())))
     if storage.companionUuid == nil then
         local Uuid = world.entityUuid(args.sourceId)
         storage.companionUuid = Uuid
@@ -62,6 +84,7 @@ helper.log(tostring(tonumber(entity.seed())))
         storage.companionUuid = nil
         self.companionEntityId = nil
     end
+    --world.spawnNpc(entity.toAbsolutePosition({ 0.0, 0.0 }), entity.species(), "villager", entity.level(), entity.seed());
 end
 --------------------------------------------------------------------------------
 function lovebound.addRelationshipEffect(args)
@@ -97,12 +120,10 @@ function lovebound.decay()
   end
 end
 --------------------------------------------------------------------------------
-function lovebound.damage(args)
-world.logInfo("-- onDamage " .. args.sourceKind)
-  if args.sourceKind ~= "friendship" and args.sourceKind ~= "love" then return nil end
+function lovebound.updateRelationship(args)
+  if lovebound.targetId == nil then return end
   
-  local Uuid = world.entityUuid(args.sourceId)
-  local status = storage.relationships[Uuid]
+  local status = storage.relationships[lovebound.targetId]
   local df = 0
   local dl = 0
   
@@ -126,7 +147,7 @@ world.logInfo("-- onDamage " .. args.sourceKind)
   
   status.friend = status.friend + df
   status.love = status.love + dl
-  storage.relationships[Uuid] = status
+  storage.relationships[lovebound.targetId] = status
   
   if df > 0 then
     local fThreshold = entity.configParameter("relationship.companionThreshold", nil)
@@ -149,22 +170,6 @@ world.logInfo("-- onDamage " .. args.sourceKind)
     lovebound.addRelationshipEffect({type = "indifference", emote = "neutral" })
     --world.spawnProjectile("indifferenceprojectile", entity.toAbsolutePosition({ 0, 2 }))
   end
-
-
-
-	world.logInfo("--" .. entity.seed())
-	--world.logInfo("--" .. string.format("%i", tonumber(entity.seed())))
-	--world.logInfo("--" .. string.format("%o", tonumber(entity.seed())))
-	--world.logInfo("--" .. string.format("%u", tonumber(entity.seed())))
-	--world.logInfo("--" .. string.format("%E", tonumber(entity.seed())))
-	--world.logInfo("--" .. string.format("%e", tonumber(entity.seed())))
-	world.logInfo("--" .. string.format("%f", tonumber(entity.seed())))
-	world.logInfo("--" .. string.format("%g", tonumber(entity.seed())))
-	world.logInfo("--" .. string.format("%G", tonumber(entity.seed())))
-	if #entity.seed() < 20 then
-	  --world.spawnNpc(entity.toAbsolutePosition({ 0.0, 0.0 }), entity.species(), "villager", entity.level(), tonumber(entity.seed()));
-	end
-  
   return true
 end
 --------------------------------------------------------------------------------

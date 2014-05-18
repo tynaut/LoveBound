@@ -4,7 +4,19 @@
   ],
   "output" : {
     "item" : "lovegift",
-    "count" : 100
+    "count" : 1,
+    "data" : {
+      "projectileConfig" : {
+        "actionOnReap" : [ {
+          "action" : "spawnmonster",
+          "offset" : [0, 0],
+          "type" : "itemator",
+          "arguments" : {
+            "itemConfig" : { "itemName" : "lovegift", "lovebound" : true }
+          }
+        } ]
+      }
+    }
   },
   "groups" : [ "stonefurnace", "all" ]
 }
