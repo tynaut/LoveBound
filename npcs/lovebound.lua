@@ -1,67 +1,39 @@
-if delegate ~= nil then delegate.create("lovebound") end
 --------------------------------------------------------------------------------
 function isCompanion()
   return lovebound ~= nil and lovebound.isCompanion()
 end
 --------------------------------------------------------------------------------
-function isCompatible()
-  return entity.seed() == tostring(tonumber(entity.seed()))
-end
---------------------------------------------------------------------------------
-function shouldRespawn()
---  if self.seedValidated == true then return false end
---  self.seedValidated = true
---  for i, value in pairs(entity) do
---	    world.logInfo("--" .. i)
---	  end
---	  for i, value in pairs(world) do
---	    world.logInfo("--" .. i)
---	  end
---  if not isCompatible() then
---    world.logInfo("--lovebound -- Respawning entity with clonable seed")
---    --world.spawnNpc(entity.toAbsolutePosition({ 0.0, 0.0 }), entity.species(), "villager", entity.level(), tonumber(entity.seed()));
---    return true
---  end
-  return false
-end
---------------------------------------------------------------------------------
 function interceptItemator(itemConfig)
   if lovebound.intercept and itemConfig.lovebound then
-    lovebound.updateRelationship(itemConfig)
+    lovebound.updateRelationship(lovebound.targetId, itemConfig)
     lovebound.intercept = false
+    lovebound.targetId = nil
     return true
   end
   return false
 end
 --------------------------------------------------------------------------------
-lovebound = {}
+lovebound = {
+  interactDelay = 1,
+  interactTimer = 0,
+  decayTime = 3600
+}
+if delegate ~= nil then delegate.create("lovebound") end
 --------------------------------------------------------------------------------
 function lovebound.init()
-  if storage.relationships == nil then
-    local relationships = entity.configParameter("relationships", {})
-    if relationships ~= nil then
-      storage.relationships = relationships
-    end
-  end
-  
-  if storage.companionUuid == nil then
-    local companionUuid = entity.configParameter("companionUuid", nil)
-    if companionUuid ~= nil then
-      storage.companionUuid = companionUuid
-    end
-  end
-  
-  --overload()
+
 end
 --------------------------------------------------------------------------------
 function lovebound.main()
---  if entity.id() ~= nil and entity.id() ~= 0 then
---    if shouldRespawn() then die() end
---  end
+  if lovebound.interactTimer > 0 then
+    lovebound.interactTimer = lovebound.interactTimer - entity.dt()
+  end
 end
 --------------------------------------------------------------------------------
 function lovebound.die()
-
+  if lovebound.beacon then
+  
+  end
 end
 --------------------------------------------------------------------------------
 function lovebound.damage(args)
@@ -69,7 +41,7 @@ function lovebound.damage(args)
   
   if args.sourceKind ~= "lovebound" then 
     if lovebound.targetId == Uuid then lovebound.targetId = nil end
-    return nil
+    return
   end
   lovebound.intercept = true
   lovebound.targetId = Uuid
@@ -77,65 +49,85 @@ function lovebound.damage(args)
 end
 --------------------------------------------------------------------------------
 function lovebound.interact(args)
-    if storage.companionUuid == nil then
-        local Uuid = world.entityUuid(args.sourceId)
-        storage.companionUuid = Uuid
-    else
-        storage.companionUuid = nil
-        self.companionEntityId = nil
+  if args == nil or args.sourceId == nil then return end
+  if lovebound.interactTimer > 0 then
+    local Uuid = world.entityUuid(args.sourceId)
+    local r = lovebound.getRelationship(Uuid)
+    if lovebound.willFollow(r) then
+      entity.say("Can I tag along?")
+      storage.lb.companionUuid = Uuid
+      self.companionEntityId = args.sourceId
+    elseif Uuid == storage.lb.companionUuid then
+      entity.say("See you later.")
+      storage.lb.companionUuid = nil
+      self.companionEntityId = nil
     end
-    --world.spawnNpc(entity.toAbsolutePosition({ 0.0, 0.0 }), entity.species(), "villager", entity.level(), entity.seed());
+    return true
+  end
+  lovebound.interactTimer = lovebound.interactDelay
+end
+--------------------------------------------------------------------------------
+function lovebound.willFollow(r)
+  if r == nil then return false end
+  if storage.lb.companionUuid == nil then
+    return r.f > entity.configParameter("relationship.companionThreshold", 50)
+  end
+  local c = lovebound.getRelationship(storage.lb.companionUuid)
+  return r.f > c.f
 end
 --------------------------------------------------------------------------------
 function lovebound.addRelationshipEffect(args)
-    if args == nil then return end
-    local relationship = "lb" .. tostring(args.type) .. "pill"
-    if args.emote ~= nil then entity.emote(args.emote) end
-    if relationship then
-        if self.state.stateDesc() == "sitState" then self.state.endState() end
-        lovebound.oldPrimaryItem = entity.getItemSlot("primary")
-        entity.setItemSlot("primary", {name = relationship, count = 1})
-        delegate.delayCallback("lovebound", "activateRelationshipEffect", nil, 0.1)
-    end
+  if args == nil then return end
+  local relationship = "lb" .. tostring(args.type) .. "pill"
+  if args.emote ~= nil then entity.emote(args.emote) end
+  if relationship then
+    if self.state.stateDesc() == "sitState" then self.state.endState() end
+    lovebound.oldPrimaryItem = entity.getItemSlot("primary")
+    entity.setItemSlot("primary", {name = relationship, count = 1})
+    delegate.delayCallback("lovebound", "activateRelationshipEffect", nil, 0.1)
+  end
 end
 --------------------------------------------------------------------------------
 function lovebound.activateRelationshipEffect()
-    entity.beginPrimaryFire()
-    delegate.delayCallback("lovebound", "endRelationshipEffect", nil, 0.1)
+  entity.beginPrimaryFire()
+  delegate.delayCallback("lovebound", "endRelationshipEffect", nil, 0.1)
 end
 --------------------------------------------------------------------------------
 function lovebound.endRelationshipEffect()
-    entity.endPrimaryFire()
+  entity.endPrimaryFire()
+  delegate.delayCallback("lovebound", "equipOld", nil, 0.1)
+end
+--------------------------------------------------------------------------------
+function lovebound.equipOld()
     entity.setItemSlot("primary", lovebound.oldPrimaryItem)
 end
 --------------------------------------------------------------------------------
-function lovebound.decay()
-  local decay = entity.configParameter("relationship.decayRate", 0.1)
-  for i,status in pairs(storage.relationships) do
-    status.friend = status.friend - decay
-    status.love = status.love - decay
-    if status.friend <= 0 then
-      storage.relationships[i] = nil
-    end
+function lovebound.getRelationship(targetId)
+  if storage.lb == nil then
+    storage.lb = entity.configParameter("lb", {data = {}})
+    if storage.lb == nil then storage.lb = {data = {}} end
   end
+  if targetId == nil then return end
+  if storage.lb.data == nil then storage.lb.data = {} end
+  
+  local r = lovebound.decay(storage.lb.data[targetId])
+  if r == nil then
+    r = {
+      f = 0, l = 0, t = os.time()
+    }
+  end
+  return r
 end
 --------------------------------------------------------------------------------
-function lovebound.updateRelationship(args)
-  if lovebound.targetId == nil then return end
-  
-  local status = storage.relationships[lovebound.targetId]
+function lovebound.updateRelationship(targetId, args)
+  if targetId == nil then return end
+
+  local r = lovebound.getRelationship(targetId)
   local df = 0
   local dl = 0
   
-  if status == nil then
-    status = {
-		friend = 0,
-		love = 0
-	}
-  end
-  
   if args.sourceKind == "love" then
-    if status.friend < 10 then -- buy me a drink first!
+    if r.f < entity.configParameter("relationship.loveThreshold", 100) then -- buy me a drink first!
       dl = entity.randomizeParameterRange("relationship.disgustRange")
       df = entity.randomizeParameterRange("relationship.offendRange")
     else -- how lovely
@@ -145,20 +137,20 @@ function lovebound.updateRelationship(args)
     df = entity.randomizeParameterRange("relationship.charmRange")
   end
   
-  status.friend = status.friend + df
-  status.love = status.love + dl
-  storage.relationships[lovebound.targetId] = status
+  r.f = r.f + df
+  r.l = r.l + dl
+  storage.lb.data[targetId] = r
   
   if df > 0 then
     local fThreshold = entity.configParameter("relationship.companionThreshold", nil)
-    if fThreshold ~= nil and status.friend > fThreshold then
-      entity.say("Can I tag along with you?")
+    if fThreshold ~= nil and r.f > fThreshold then
+      
     end
     lovebound.addRelationshipEffect({type = "friendship", emote = "happy" })
     --world.spawnProjectile("friendprojectile", entity.toAbsolutePosition({ 0, 2 }))
   elseif dl > 0 then
-    local fThreshold = entity.configParameter("relationship.companionThreshold", nil)
-    if fThreshold ~= nil and status.friend > fThreshold then
+    local fThreshold = entity.configParameter("relationship.loveThreshold", nil)
+    if fThreshold ~= nil and r.f > fThreshold then
       entity.say("I Love You!")
     end
     lovebound.addRelationshipEffect({type = "love", emote = "wink" })
@@ -170,21 +162,60 @@ function lovebound.updateRelationship(args)
     lovebound.addRelationshipEffect({type = "indifference", emote = "neutral" })
     --world.spawnProjectile("indifferenceprojectile", entity.toAbsolutePosition({ 0, 2 }))
   end
+  
+  --TODO check if currently following and decay
   return true
 end
 --------------------------------------------------------------------------------
-function lovebound.isCompanion()
-  return storage.companionUuid ~= nil
+function lovebound.decay(r)
+  if r == nil or r.f == nil or r.l == nil or r.t == nil then return nil end  
+  local decay = entity.configParameter("relationship.decayRate", 1) * lovebound.decayTime
+  local d = os.time() - r.t
+  
+  if r.l > 0 then
+    r.l = r.l - (d / decay)
+  elseif r.f > 0 then
+    r.f = r.f - (d / decay)
+  end
+  r.t = os.time()
+  return r
 end
 --------------------------------------------------------------------------------
-
-
-
---  local pri = world.entityHandItem(args.sourceId, "primary")
---  local alt = world.entityHandItem(args.sourceId, "alt")
---  local df = 1 --math.random(-2, 5)
+function lovebound.isCompanion()
+  lovebound.getRelationship()
+  return storage.lb.companionUuid ~= nil
+end
+--------------------------------------------------------------------------------
+function lovebound.beaconPing(beaconId)
+  if not lovebound.isCompanion() then return end
   
---if entity.seed() == tonumber(entity.seed()) then df = 0 end
+  if self.state then self.state.pickState({beaconId = beaconId}) end
+end
+--------------------------------------------------------------------------------
+function lovebound.beaconConfig()
+  local config = {
+    itemName = "beacondatachip",
+    species = entity.species(),
+    type = "villager",
+    level = entity.level(),
+    seed = entity.seed(),
+    config = {
+      dropPools = {"none"},
+      scriptConfig = {
+        spawnedBy = entity.configParameter("spawnedBy", nil),
+        lb = storage.lb,
+        npceq = storage.npceq
+      }
+    }
+  }
+  return config
+end
+--------------------------------------------------------------------------------
+function lovebound.despawn()
+  entity.setItemSlot("primary", {name = "advancedteleporter", count = 1})
+  delegate.delayCallback("lovebound", "activateRelationshipEffect", nil, 0.5)
+end
+--------------------------------------------------------------------------------
 
 function overload()
     chatState.loveboundEnter = chatState.enterWith

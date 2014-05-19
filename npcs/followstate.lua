@@ -87,5 +87,5 @@ function followState.teleport(position)
     params.equipment = storage.equipment
     --world.spawnNPC(position, species, type, level, seed, params)
     world.logInfo("break here")
-    entity["die"]()
+    --entity["die"]()
 end

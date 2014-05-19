@@ -1,0 +1,13 @@
+{
+  "__merge" : [],
+  "none" : [
+    [1, {
+        "pool" : [],
+        "poolRounds" : [
+          [1.00, 0]
+        ],
+        "levelVariance" : [0, 0],
+        "allowDuplication" : false
+      } ]
+  ]
+}

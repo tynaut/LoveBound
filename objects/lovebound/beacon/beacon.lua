@@ -52,22 +52,15 @@ function pingNpcs()
   local npcIds = world.npcQuery(entity.position(), beacon.npcRage, {order = "nearest"})
   for _,id in ipairs(npcIds) do
     if not beacon.npc[id] then
-      world.callScriptedEntity(id, "lovebound.ping", entity.id())
-      relocateNpc(id)
-      beacon.npc[id] = true
+      world.callScriptedEntity(id, "lovebound.beaconPing", entity.id())
     end
   end
 end
 --------------------------------------------------------------------------------
 function relocateNpc(id)
   if world.isNpc(id) then
-    local itemConfig = {
-      itemName = "beacondatachip",
-      species = world.callScriptedEntity(id, "entity.species"),
-      type = "villager",
-      level = 1,
-      seed = world.callScriptedEntity(id, "entity.seed")
-    }
+    beacon.npc[id] = true
+    local itemConfig = world.callScriptedEntity(id, "lovebound.beaconConfig")
     local config = {
       projectileConfig = {
         actionOnReap = {
@@ -84,8 +77,12 @@ function relocateNpc(id)
       itemConfig = itemConfig
     }
     local item = world.spawnItem(itemConfig.itemName, entity.position(), 1, config)
-    if item then beacon.data[item] = true end
+    if item then
+      beacon.data[item] = true
+      return true
+    end
   end
+  return nil
 end
 --------------------------------------------------------------------------------
 function collectData()
@@ -97,7 +94,7 @@ function collectData()
       local item = world.takeItemDrop(id, entity.id())
       if item then
         local npc = item.data.itemConfig
-        local n = world.spawnNpc({position[1], position[2] + 2}, npc.species, npc.type, npc.level, npc.seed);
+        local n = world.spawnNpc({position[1], position[2] + 2}, npc.species, npc.type, npc.level, npc.seed, npc.config);
         if n then
           beacon.npc[n] = true
           success = true
