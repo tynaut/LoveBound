@@ -1,3 +1,9 @@
+- Change particles back to locked projectile
+- Put respawn on back item?
+-- Respawn vs Beacon Despawn
+-- Shorten respawn time
+-- get data drop/death in sync
+
 - NPCs
   - Villagers
   @ Guards

@@ -1,0 +1,15 @@
+{
+  "itemName" : "lbdespawner",
+  "rarity" : "Rare",
+  "inventoryIcon" : "despawner.png",
+  "description" : "Despawner",
+  "shortdescription" : "Despawner",
+  "handPosition" : [8, 6],
+  "effects" : [ [
+      {
+        "kind" : "lbdespawnstatus"
+      }
+    ] ],
+  "emitters" : [ ],//"bandageuse" ],
+  "emote" : ""
+}

@@ -1,9 +1,9 @@
 {
   "kind" : "loveeffect",
+  "location" : "mouth",
   "definition" : {
     "duration" : 0.5,
     "loops" : true,
-    "location" : "mouth",
     "start" : {
       "particles" : [
         [ ]

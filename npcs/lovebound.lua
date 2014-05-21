@@ -62,7 +62,7 @@ function lovebound.interact(args)
       storage.lb.companionUuid = nil
       self.companionEntityId = nil
     end
-    return true
+    return nil
   end
   lovebound.interactTimer = lovebound.interactDelay
 end
@@ -78,13 +78,16 @@ end
 --------------------------------------------------------------------------------
 function lovebound.addRelationshipEffect(args)
   if args == nil then return end
-  local relationship = "lb" .. tostring(args.type) .. "pill"
+  --local relationship = "lb" .. tostring(args.type) .. "pill"
+  local relationship = tostring(args.type) .. "projectile"
   if args.emote ~= nil then entity.emote(args.emote) end
   if relationship then
-    if self.state.stateDesc() == "sitState" then self.state.endState() end
-    lovebound.oldPrimaryItem = entity.getItemSlot("primary")
-    entity.setItemSlot("primary", {name = relationship, count = 1})
-    delegate.delayCallback("lovebound", "activateRelationshipEffect", nil, 0.1)
+    --if self.state.stateDesc() == "sitState" then self.state.endState() end
+    --lovebound.oldPrimaryItem = entity.getItemSlot("primary")
+    --entity.setItemSlot("primary", {name = relationship, count = 1})
+    --delegate.delayCallback("lovebound", "activateRelationshipEffect", nil, 0.1)
+    
+    world.spawnProjectile(relationship, entity.position(), entity.id(), {0, 0}, true)--, config)
   end
 end
 --------------------------------------------------------------------------------
@@ -146,23 +149,18 @@ function lovebound.updateRelationship(targetId, args)
     if fThreshold ~= nil and r.f > fThreshold then
       
     end
-    lovebound.addRelationshipEffect({type = "friendship", emote = "happy" })
-    --world.spawnProjectile("friendprojectile", entity.toAbsolutePosition({ 0, 2 }))
+    lovebound.addRelationshipEffect({type = "friend", emote = "happy" })
   elseif dl > 0 then
     local fThreshold = entity.configParameter("relationship.loveThreshold", nil)
     if fThreshold ~= nil and r.f > fThreshold then
       entity.say("I Love You!")
     end
     lovebound.addRelationshipEffect({type = "love", emote = "wink" })
-    --world.spawnProjectile("loveprojectile", entity.toAbsolutePosition({ 0, 2 }))
   elseif dl < 0 or df < 0 then
     lovebound.addRelationshipEffect({type = "dislike", emote = "annoyed" })
-    --world.spawnProjectile("dislikeprojectile", entity.toAbsolutePosition({ 0, 2 }))
   else
     lovebound.addRelationshipEffect({type = "indifference", emote = "neutral" })
-    --world.spawnProjectile("indifferenceprojectile", entity.toAbsolutePosition({ 0, 2 }))
   end
-  
   --TODO check if currently following and decay
   return true
 end
@@ -212,8 +210,8 @@ function lovebound.beaconConfig()
 end
 --------------------------------------------------------------------------------
 function lovebound.despawn()
-  entity.setItemSlot("primary", {name = "advancedteleporter", count = 1})
-  delegate.delayCallback("lovebound", "activateRelationshipEffect", nil, 0.5)
+  entity.setItemSlot("primary", {name = "lbdespawner", count = 1})
+  delegate.delayCallback("lovebound", "activateRelationshipEffect", nil, 0.1)
 end
 --------------------------------------------------------------------------------
 

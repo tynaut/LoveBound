@@ -1,0 +1,19 @@
+{
+  "kind" : "lbdespawnstatus",
+  "duration" : 0.05,
+  "initialTick" : true,
+  "interval" : 0.01,
+  "primitives" : [
+    { "name" : "periodic" }
+  ],
+  //"effectSources" : [ "teleportdespawneffect" ],
+  "tick" : {
+    "statusEffects" : [
+      {
+        "kind" : "directDamage",
+        "damageKind" : "hiddendamage",
+        "amount" : 999
+      }
+    ]
+  }
+}
